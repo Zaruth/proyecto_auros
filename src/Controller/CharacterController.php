@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Utils\Utilities;
 
 /**
  * @Route("/juego/character")
@@ -84,12 +85,19 @@ class CharacterController extends Controller
     /**
      * @Route("/{id}", name="character_show", methods="GET")
      */
-    public function show(Character $character): Response
+    public function show(Character $character, Utilities $utilities): Response
     {   
         if($this->ifPjNoExists()){
             return $this->redirectToRoute('character_new');
         }else{
-            return $this->render('character/show.html.twig', ['character' => $this->getUser()->getUCharacter()]);
+            $exp = $this->getUser()->getUCharacter()->getExp();
+            $lvl = $utilities->getLvl($exp);
+            $expNextLvl = $utilities->expLvl($lvl+1) - $exp;
+            return $this->render('character/show.html.twig', [
+                'character' => $this->getUser()->getUCharacter(),
+                'lvl' => $lvl,
+                'expNextLvl' => $expNextLvl,
+            ]);
         }
     }
 

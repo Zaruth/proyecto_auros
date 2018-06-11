@@ -363,7 +363,7 @@ class Character
         return $this->workStart;
     }
 
-    public function setWorkStart(\DateTimeInterface $workStart): self
+    public function setWorkStart(\DateTimeInterface $workStart = null): self
     {
         $this->workStart = $workStart;
 
@@ -375,7 +375,7 @@ class Character
         return $this->workFinish;
     }
 
-    public function setWorkFinish(\DateTimeInterface $workFinish): self
+    public function setWorkFinish(\DateTimeInterface $workFinish = null): self
     {
         $this->workFinish = $workFinish;
 

@@ -35,20 +35,28 @@
             <td>{{ character.age }}</td>
         </tr>
         <tr>
-            <th>Birthdate</th>
+            <th>Fecha de nacimiento</th>
             <td>{{ character.birthdate ? character.birthdate|date('Y-m-d H:i:s') : '' }}</td>
         </tr>
         <tr>
-            <th>Class</th>
+            <th>Clase</th>
             <td>{{ character.class }}</td>
         </tr>
         <tr>
-            <th>Subclass</th>
-            <td>{{ character.subclass }}</td>
+            <th>Subclase</th>
+            <td>{{ character.subclass ? character.subclass : 'Sin subclase' }}</td>
         </tr>
         <tr>
-            <th>Exp</th>
+            <th>Experiencia</th>
             <td>{{ character.exp }}</td>
+        </tr>
+        <tr>
+            <th>Nivel</th>
+            <td>{{ lvl }}</td>
+        </tr>
+        <tr>
+            <th>Experiencia siguiente nivel</th>
+            <td>{{ expNextLvl }}</td>
         </tr>
         <tr>
             <th>Energy</th>

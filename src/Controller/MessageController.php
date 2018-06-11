@@ -102,4 +102,11 @@ class MessageController extends Controller
     
         return $this->redirectToRoute('message_index');
     }
+
+    public function send_message(Message $message)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($message);
+        $em->flush();
+    }
 }
