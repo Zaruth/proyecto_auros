@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Foro{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Foro</h1>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for thread in threads %}
+            <tr>
+                <td>{{ thread.title }}</td>
+                <td><a href="{{ path('thread_category', {'category': thread.category}) }}">{{ thread.category }}</a></td>
+                <td>A las <b>{{ thread.date ? thread.date|date('H:i:s') : '' }}</b> del día <b>{{ thread.date ? thread.date|date('d-m-Y') : '' }}</b></td>
+                <td>
+                    <a href="{{ path('thread_show', {'id': thread.id}) }}"><button class="btn btn-sm btn-info">Ver</button></a>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a href="{{ path('thread_delete', {'id': thread.id}) }}"><button class="btn btn-sm btn-danger">Borrar</button></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('thread_new') }}">Create new</a>
+{% endblock %}

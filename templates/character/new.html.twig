@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo Personaje{% endblock %}
+
+{% block body %}
+<div class="container">
+<h1 class="text-center">Nuevo Personaje</h1>
+
+{{ form_start(form) }}
+<table align="center">
+    <tr>
+        <td align="right">
+            {{ form_label(form.lastName) }}
+        </td>
+        <td>
+            {{ form_widget(form.lastName) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.surName) }}
+        </td>
+        <td>
+            {{ form_widget(form.surName) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.surName2) }}
+        </td>
+        <td>
+            {{ form_widget(form.surName2) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.gender) }}
+        </td>
+        <td>
+            {{ form_widget(form.gender) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.race) }}
+        </td>
+        <td>
+            {{ form_widget(form.race) }}
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top; padding-top: 20px;">
+            <h6>(Imagen)</h6>
+            <img id="imgraza" src="">
+        </td>
+        <td align="center">
+            <div style="width: 200px;">
+                <h3 id="raza"></h3>
+                <p class="text-justify" id="textoraza"></p>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.age) }}
+        </td>
+        <td>
+            {{ form_widget(form.age) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="right">
+            {{ form_label(form.class) }}
+        </td>
+        <td>
+            {{ form_widget(form.class) }}
+        </td>
+    </tr>
+    <tr>
+        <td align="center" style="vertical-align: top; padding-top: 20px; width:64px;">
+            <h6>(Imagen)</h6>
+            <img id="imgemblem" src="">
+        </td>
+        <td align="center">
+            <div style="width: 200px;">
+                <h3 id="clase"></h3>
+                <p class="text-justify" id="textoclase" ></p>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <button type="submit">Registrar</button>
+        </td>
+    </tr>
+</table>
+{{ form_end(form) }}
+</div>
+<script>
+    function cambiatextoraza() {
+        switch(document.getElementById("character_race").value){
+            case 'Humano':
+                document.getElementById("raza").innerHTML = 'Humano';
+                document.getElementById("textoraza").innerHTML = 'La raza humana es una raza débil. Basan su capacidad en su intelecto. Para adquirir fuerza o conocimientos mágicos tienen que entrenar el doble que las otras razas.';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Humano.gif') }}";
+                break;
+            case 'Orco oscuro':
+                document.getElementById("raza").innerHTML = 'Orco oscuro';
+                document.getElementById("textoraza").innerHTML = 'Los Orco oscuros, seres con una fuerza monumental, son grandes guerreros y luchadores. La guerra es su especialidad. A causa de su procedencia su magia suele estar ligada a las artes oscuras (aunque hay excepciones).';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Orco.gif') }}";
+                break;
+            case 'Ligneo':
+                document.getElementById("raza").innerHTML = 'Ligneo';
+                document.getElementById("textoraza").innerHTML = 'Los Ligneos una vez fueron humanos que decidieron vivir en lo más profundo de los bosques. Ahora, una extraña enfermedad los ha convertido en seres sobrenaturales, hechos de corteza, hojas y raices.';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Ligneo.gif') }}";
+                break;
+            case 'Elfo solar':
+                document.getElementById("raza").innerHTML = 'Elfo solar';
+                document.getElementById("textoraza").innerHTML = 'La mágia pura fluye por sus venas. Antiguos seres a los que les fue negada su fuente de alimento, decidieron entonces conjurar entiguos rituales para hacerse más fuertes. Su fuente de energía es la luz estelar.';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Elfo.gif') }}";
+                break;
+            case 'Efrit':
+                document.getElementById("raza").innerHTML = 'Efrit';
+                document.getElementById("textoraza").innerHTML = 'Seres bendecidos por el fuego. Son los renegados que han encontrado una alianza con los elfos solares. Al principio cuesta contener la fuerza del fuego pero con entrenamiento suelen ser un arma potente.';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Efrit.gif') }}";
+                break;
+            case 'Lapidum':
+                document.getElementById("raza").innerHTML = 'Lapidum';
+                document.getElementById("textoraza").innerHTML = 'Siglos después de la primera singularidad, la piedra se unió para formar estos seres. No están vivos aparentemente, sólo la mágia la cuál une sus fragmentos.';
+                document.getElementById("imgraza").src = "{{ asset('img/game/pjs/Lapidum.gif') }}";
+                break;
+        }
+    }
+    function cambiatextoclase() {
+        switch(document.getElementById("character_class").value){
+            case 'Adepto':
+                document.getElementById("clase").innerHTML = 'Adepto';
+                document.getElementById("textoclase").innerHTML = 'Afinidad con la mágia y los poderes arcanos. Características exclusivas de clase: Inteligencia y Maná.';
+                document.getElementById("imgemblem").src = "{{ asset('img/game/emblems/adepto.gif') }}";
+                break;
+            case 'Soldado':
+                document.getElementById("clase").innerHTML = 'Soldado';
+                document.getElementById("textoclase").innerHTML = 'Combatiente fiero diestro en el combate cuerpo a cuerpo. Características exclusivas de clase: Fuerza y Espíritu.';
+                document.getElementById("imgemblem").src = "{{ asset('img/game/emblems/soldado.gif') }}";
+                break;
+            case 'Bandido':
+                document.getElementById("clase").innerHTML = 'Bandido';
+                document.getElementById("textoclase").innerHTML = 'Escondido en las sombras tiende sucias trampas a sus enemigos. Características exclusivas de clase: Agilidad y Energía.';
+                document.getElementById("imgemblem").src = "{{ asset('img/game/emblems/bandido.gif') }}";
+                break;
+        }
+    }
+    cambiatextoclase();
+    cambiatextoraza();
+</script>
+{% endblock %}

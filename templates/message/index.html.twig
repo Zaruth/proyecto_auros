@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mensajería{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Mensajería</h1>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th>Remitente</th>
+                <th>Mensaje</th>
+                <th>Recibido</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.characterfrom.lastname }} {{ message.characterfrom.surname }} {{ message.characterfrom.surname2 ? message.characterfrom.surname2 : ''}}</td>
+                <td>{{ message.text|slice(0, 40) }}...</td>
+                <td>A las <b>{{ message.date ? message.date|date('H:i:s') : '' }}</b> del día <b>{{ message.date ? message.date|date('d-m-Y') : '' }}</b></td>
+                <td>
+                    <a href="{{ path('message_show', {'id': message.id}) }}"><button class="btn btn-sm btn-info">Leer</button></a>
+                    {% if message.reported %}
+                        <span class="text-warning"> Reportado </span>
+                    {% else %}
+                        <a href="{{ path('message_report', {'id': message.id}) }}"><button class="btn btn-sm btn-warning">Reportar</button></a>
+                    {% endif %}
+                    <a href="{{ path('message_delete', {'id': message.id}) }}"><button class="btn btn-sm btn-danger">Borrar</button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Sin mensajes</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

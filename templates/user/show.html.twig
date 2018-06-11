@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Resumen{% endblock %}
+
+{% block body %}
+    <h1>Resumen</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Usuario:</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Rol:</th>
+                <td>
+                    {% if user.roles[0] == "ROLE_ADMIN" %}
+                            Administrador
+                    {% endif %}
+                    {% if user.roles[0] == "ROLE_MOD" %}
+                            Moderador
+                    {% endif %}
+                    {% if user.roles[0] == "ROLE_USER" %}
+                            Usuario
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Fecha de creación:</th>
+                <td>{{ user.created|date("m/d/Y H:m:s") }}</td>
+            </tr>
+            <tr>
+                <th>Premium hasta:</th>
+                <td>
+                    {% if user.premium  %}
+                        {{ user.premium|date("m/d/Y H:m:s") }}
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Silenciado hasta:</th>
+                <td>
+                    {% if user.silenced  %}
+                        {{ user.silenced|date("m/d/Y H:m:s") }}
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_edit', {'id': user.id}) }}">Editar</a><br>
+
+    <a href="{{ path('logout') }}">Salir</a>
+
+{% endblock %}

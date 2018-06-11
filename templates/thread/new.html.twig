@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo Tema{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center">Nuevo Tema</h1>
+    
+    {{ form_start(form) }}
+    <table align="center">
+        <tr>
+            <td align="right">
+                {{ form_label(form.title) }}
+            </td>
+            <td>
+                {{ form_widget(form.title) }}
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                {{ form_label(form.category) }}
+            </td>
+            <td>
+                {{ form_widget(form.category) }}
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                Mensaje: 
+            </td>
+            <td>
+                <textarea class="form-control" name="mensaje" placeholder="Mensaje" required="required"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button class="btn" type="submit">Crear</button>
+            </td>
+        </tr>
+    </table>
+    {{ form_end(form) }}
+</div>
+    <a href="{{ path('thread_index') }}">back to list</a>
+{% endblock %}

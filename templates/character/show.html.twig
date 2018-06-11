@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+{% block title %}Personaje{% endblock %}
+
+{% block body %}
+<h1>Personaje</h1>
+
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ character.id }}</td>
+        </tr>
+        <tr>
+            <th>LastName</th>
+            <td>{{ character.lastName }}</td>
+        </tr>
+        <tr>
+            <th>SurName</th>
+            <td>{{ character.surName }}</td>
+        </tr>
+        <tr>
+            <th>SurName2</th>
+            <td>{{ character.surName2 }}</td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>{{ character.gender }}</td>
+        </tr>
+        <tr>
+            <th>Race</th>
+            <td>{{ character.race }}</td>
+        </tr>
+        <tr>
+            <th>Age</th>
+            <td>{{ character.age }}</td>
+        </tr>
+        <tr>
+            <th>Birthdate</th>
+            <td>{{ character.birthdate ? character.birthdate|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Class</th>
+            <td>{{ character.class }}</td>
+        </tr>
+        <tr>
+            <th>Subclass</th>
+            <td>{{ character.subclass }}</td>
+        </tr>
+        <tr>
+            <th>Exp</th>
+            <td>{{ character.exp }}</td>
+        </tr>
+        <tr>
+            <th>Energy</th>
+            <td>{{ character.energy }}</td>
+        </tr>
+        <tr>
+            <th>Skillpoints</th>
+            <td>{{ character.skillpoints }}</td>
+        </tr>
+        <tr>
+            <th>Gold</th>
+            <td>{{ character.gold }}</td>
+        </tr>
+        <tr>
+            <th>Silver</th>
+            <td>{{ character.silver }}</td>
+        </tr>
+        <tr>
+            <th>Copper</th>
+            <td>{{ character.copper }}</td>
+        </tr>
+        <tr>
+            <th>Worked</th>
+            <td>{{ character.worked }}</td>
+        </tr>
+        <tr>
+            <th>WorkStart</th>
+            <td>{{ character.workStart ? character.workStart|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>WorkFinish</th>
+            <td>{{ character.workFinish ? character.workFinish|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Fights</th>
+            <td>{{ character.fights }}</td>
+        </tr>
+        <tr>
+            <th>FightsWon</th>
+            <td>{{ character.fightsWon }}</td>
+        </tr>
+        <tr>
+            <th>LastFight</th>
+            <td>{{ character.lastFight ? character.lastFight|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>LastForum</th>
+            <td>{{ character.lastForum ? character.lastForum|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>LastMsg</th>
+            <td>{{ character.lastMsg ? character.lastMsg|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Bot</th>
+            <td>{{ character.bot ? 'Yes' : 'No' }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="{{ path('character_index') }}">back to list</a>
+
+{% endblock %}

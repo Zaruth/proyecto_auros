@@ -1,0 +1,36 @@
+<?php declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20180608122230 extends AbstractMigration
+{
+    public function up(Schema $schema) : void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE app_users DROP FOREIGN KEY FK_C250282491FAC277');
+        $this->addSql('DROP INDEX UNIQ_C250282491FAC277 ON app_users');
+        $this->addSql('ALTER TABLE app_users CHANGE user_character_id u_character_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE app_users ADD CONSTRAINT FK_C2502824FB6E3EB1 FOREIGN KEY (u_character_id) REFERENCES characters (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_C2502824FB6E3EB1 ON app_users (u_character_id)');
+    }
+
+    public function down(Schema $schema) : void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE app_users DROP FOREIGN KEY FK_C2502824FB6E3EB1');
+        $this->addSql('DROP INDEX UNIQ_C2502824FB6E3EB1 ON app_users');
+        $this->addSql('ALTER TABLE app_users CHANGE u_character_id user_character_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE app_users ADD CONSTRAINT FK_C250282491FAC277 FOREIGN KEY (user_character_id) REFERENCES characters (id)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_C250282491FAC277 ON app_users (user_character_id)');
+    }
+}
