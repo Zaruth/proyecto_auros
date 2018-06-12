@@ -3,10 +3,11 @@
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-<h1>REGISTRO</h1>
-
+<h1>Registro</h1>
+<br>
+Regístrate para acceder al juego. ¡Es gratis!
 {{ form_start(form) }}
-<table>
+<table align="center">
     <tr>
         <td align="right">
             {{ form_label(form.username) }}
@@ -41,12 +42,13 @@
     </tr>
     <tr>
         <td colspan="2" align="center">
-            <button type="submit">Registrar</button>
+            <button class="btn btn-success" type="submit">Registrar</button>
         </td>
     </tr>
 </table>
 {{ form_end(form) }}
 
-Inicio: <a href="{{ path('inicio') }}">Enlace</a><br>
-Login: <a href="{{ path('login') }}">Enlace</a>
+<br>
+    <p>¿Tienes cuenta? ¡Accede con ella ahora!</p>
+    <a href="{{ path('login') }}"><button class="btn btn-primary">Login</button></a>
 {% endblock %}

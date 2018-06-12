@@ -3,7 +3,7 @@
 {% block title %}Foro{% endblock %}
 
 {% block body %}
-    <h1 class="text-center">Foro</h1>
+    <h1>Foro</h1>
 
     <table class="table text-center">
         <thead>
@@ -18,22 +18,22 @@
         {% for thread in threads %}
             <tr>
                 <td>{{ thread.title }}</td>
-                <td><a href="{{ path('thread_category', {'category': thread.category}) }}">{{ thread.category }}</a></td>
+                <td><a href="{{ path('thread_category', {'category': thread.category}) }}"><button class="btn btn-sm btn-info">{{ thread.category }}</button></a></td>
                 <td>A las <b>{{ thread.date ? thread.date|date('H:i:s') : '' }}</b> del día <b>{{ thread.date ? thread.date|date('d-m-Y') : '' }}</b></td>
                 <td>
                     <a href="{{ path('thread_show', {'id': thread.id}) }}"><button class="btn btn-sm btn-info">Ver</button></a>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MOD') %}
                         <a href="{{ path('thread_delete', {'id': thread.id}) }}"><button class="btn btn-sm btn-danger">Borrar</button></a>
                     {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Sin Temas. ¡Sé el primero en crear uno!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('thread_new') }}">Create new</a>
+    <a href="{{ path('thread_new') }}"><button class="btn btn-sm btn-primary">Nuevo tema</button></a>
 {% endblock %}

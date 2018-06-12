@@ -3,18 +3,17 @@
 {% block title %}Trabajar{{ controller_name }}!{% endblock %}
 
 {% block body %}
-<div class="container text-center">
     <h1>Trabajar</h1>
     {% if app.user.ucharacter.workstart %}
         {% if "now"|date('Y-m-d H:i:s') < app.user.ucharacter.workfinish|date('Y-m-d H:i:s') %}
             <form action="{{ path('finish_work') }}">
                 <p>Trabajando hasta las <b>{{ app.user.ucharacter.workfinish ? app.user.ucharacter.workfinish|date('H:i:s') : '' }}</b> del día <b>{{ app.user.ucharacter.workfinish ? app.user.ucharacter.workfinish|date('d-m-Y') : '' }}</b></p>
-                <button class="btn" type="submit">Dejar de trabajar</button>
+                <button class="btn btn-danger" type="submit">Dejar de trabajar</button>
             </form>
         {% else %}
             <form action="{{ path('finish_work') }}">
                 <p><b>¡Trabajo terminado!</b></p>
-                <button class="btn" type="submit">Recoger recompensa</button>
+                <button class="btn btn-success" type="submit">Recoger recompensa</button>
             </form>
         {% endif %}
     {% else %}
@@ -28,8 +27,7 @@
                 <option value="5">4 Horas</option>
             </select>
             <br>
-            <button class="btn" type="submit">Trabajar</button>
+            <button class="btn btn-primary" type="submit">Trabajar</button>
         </form>
     {% endif %}
-</div>
 {% endblock %}

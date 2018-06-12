@@ -3,10 +3,11 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<h1>LOGIN</h1>
-
+<h1>Login</h1>
+<br>
+Recuerda tu usuario y tu contraseña para acceder.
 <form action="{{ path('login') }}" method="post">
-    <table>
+    <table align="center">
         <tr>
             <td align="right">
                 <label for="username">Usuario:</label>
@@ -25,7 +26,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <button type="submit">Acceder</button>
+                <button class="btn btn-primary" type="submit">Acceder</button>
             </td>
         </tr>
     </table>
@@ -35,7 +36,7 @@
         <input type="hidden" name="_target_path" value="/account" />
     #}
 </form>
-<br>
-Inicio: <a href="{{ path('inicio') }}">Enlace</a><br>
-Registro: <a href="{{ path('registro') }}">Enlace</a>
+    <br>
+    <p>¿No tienes cuenta? ¡Regístrate ahora!</p>
+    <a href="{{ path('registro') }}"><button class="btn btn-success">Registro</button></a>
 {% endblock %}

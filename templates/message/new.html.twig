@@ -3,8 +3,7 @@
 {% block title %}Nuevo Mensaje{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="text-center">Nuevo Mensaje</h1>
+    <h1>Nuevo Mensaje</h1>
     
     {{ form_start(form) }}
     <table align="center">
@@ -29,6 +28,4 @@
         </tr>
     </table>
     {{ form_end(form) }}
-</div>
-<a href="{{ path('message_index') }}">back to list</a>
 {% endblock %}

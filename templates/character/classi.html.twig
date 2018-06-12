@@ -3,7 +3,42 @@
 
 {% block body %}
 <h1>Clasificación</h1>
-
-<a href="{{ path('character_index') }}">back to list</a>
+<table class="table table-hover text-center">
+    <tr>
+        <th class="align-middle">Puesto</th>
+        <th class="align-middle">Nombre</th>
+        <th class="align-middle">Nivel</th>
+        <th class="align-middle">Exp</th>
+        <th class="align-middle">Raza</th>
+        <th class="align-middle">Clase</th>
+        <th class="align-middle">Combates<br>(ganados/perdidos)</th>
+        <th class="align-middle">Acciones</th>
+    </tr>
+{% for c in characters %}
+<tr>
+    <td class="align-middle">{{loop.index}}º</td>
+    <td class="align-middle">{{c.lastname}} {{c.surname}}</td>
+    <td class="align-middle">{{lvls[loop.index - 1]}}</td>
+    <td class="align-middle">{{c.exp}}</td>
+    <td class="align-middle"><img src="{% if c.race == 'Humano' %}{{ asset('img/game/pjs/Humano.gif') }}
+                                {% elseif c.race == 'Orco oscuro' %}{{ asset('img/game/pjs/Orco.gif') }}
+                                {% elseif c.race == 'Ligneo' %}{{ asset('img/game/pjs/Ligneo.gif') }}
+                                {% elseif c.race == 'Elfo solar' %}{{ asset('img/game/pjs/Elfo.gif') }}
+                                {% elseif c.race == 'Efrit' %}{{ asset('img/game/pjs/Efrit.gif') }}
+                                {% elseif c.race == 'Lapidum' %}{{ asset('img/game/pjs/Lapidum.gif') }}
+                                {% endif %}"></td>
+    <td class="align-middle"><img src="{% if c.class == 'Adepto' %}{{ asset('img/game/emblems/adepto.gif') }}
+        {% elseif c.class == 'Bandido' %}{{ asset('img/game/emblems/bandido.gif') }}
+        {% elseif c.class == 'Soldado' %}{{ asset('img/game/emblems/soldado.gif') }}
+        {% endif %}"></td>
+    <td class="align-middle">{{c.fightswon}} / {{c.fights}}</td>
+    <td class="align-middle"><a href="{{ path('message_new', {'id': c.id}) }}"><button class="btn btn-info">Enviar mensaje</button></a></td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="5">Sin mensajes</td>
+</tr>
+{% endfor %}
+</table>
 
 {% endblock %}

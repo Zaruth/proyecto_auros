@@ -76,8 +76,12 @@ class UserController extends Controller
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+            
+            $status = "Datos de usuario modificados con éxito.";
+            $class = "alert-success";
+            $this->session->getFlashBag()->add("class", $class);
+            $this->session->getFlashBag()->add("status", $status);
+            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
         }
 
         return $this->render('user/edit.html.twig', [

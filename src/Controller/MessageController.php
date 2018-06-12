@@ -79,16 +79,15 @@ class MessageController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="message_delete", methods="DELETE")
+     * @Route("/{id}/delete", name="message_delete")
      */
-    public function delete(Request $request, Message $message): Response
+    public function delete(Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($message);
-            $em->flush();
-        }
-
+        $em = $this->getDoctrine()->getManager();
+        $message = $em->getRepository(Message::class)->find($request->get('id'));
+        $em->remove($message);
+        $em->flush();
+        
         return $this->redirectToRoute('message_index');
     }
 

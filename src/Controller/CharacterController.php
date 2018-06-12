@@ -102,40 +102,25 @@ class CharacterController extends Controller
     }
 
     /**
-     * @Route("/classi/{n}", name="classi", methods="GET")
+     * @Route("/classi/", name="classi", methods="GET")
      */
-    public function show(Request $request, CharacterRepository $characterRepository): Response
+    public function classi(Request $request, CharacterRepository $characterRepository, Utilities $utilities): Response
     {   
-        $per_page = 10;
-        $num_pag = $request->get('n');
-
         if($this->ifPjNoExists()){
             return $this->redirectToRoute('character_new');
         }else{
-            if($num_pag !== null){
-                if($num_pag < 1){
-                    $num_pag = 1;
-                }
-            } else{
-                $num_pag = 1;
+            $em = $this->getDoctrine()->getManager();
+            $characters = $em->getRepository(Character::class)->findBy(['bot' => false],['exp' => 'DESC']);
+            $lvls = [];
+            $i = 0;
+            foreach($characters as $c){
+                $lvl = $utilities->getLvl($c->getExp());
+                $lvls[$i] = $lvl;
+                $i++;
             }
-            $users = $entityManager->getRepository(Character::class)->findBy(['bot' => false],['exp' => 'DESC']);
-
-            //$empresas = $empresa_repo->getPaginateEntries($num_pag,$per_pag);
-        
-            $totalitems = count($users);
-            $pageCount = ceil($users/$per_pag);
-            
-            if($num_pag > $pageCount){
-                $num_pag = $pageCount;
-                //$empresas = $empresa_repo->getPaginateEntries($num_pag,$per_pag);
-            }
-
-            $totalitems = count($users);
-            $pageCount = ceil($users/$per_pag);
-
             return $this->render('character/classi.html.twig', [
-                'users' => $users,
+                'characters' => $characters,
+                'lvls' => $lvls,
             ]);
         }
     }
