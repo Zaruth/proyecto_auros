@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\UserController;
 use App\Entity\Character;
 use App\Form\CharacterType;
 use App\Repository\CharacterRepository;
@@ -29,99 +30,115 @@ class CharacterController extends Controller
     /**
      * @Route("/", name="character_index", methods="GET")
      */
-    public function index(CharacterRepository $characterRepository): Response
-    {   if($this->ifPjNoExists()){
-            return $this->redirectToRoute('character_new');
+    public function index(CharacterRepository $characterRepository, UserController $uc): Response
+    {   
+        if($uc->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }else{
-            return $this->redirectToRoute('character_show', ['id' => $this->getUser()->getUCharacter()->getId()]);
+            if($this->ifPjNoExists()){
+                return $this->redirectToRoute('character_new');
+            }else{
+                return $this->redirectToRoute('character_show', ['id' => $this->getUser()->getUCharacter()->getId()]);
+            }
         }
     }
 
     /**
      * @Route("/new", name="character_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserController $uc): Response
     {
-        if($this->ifPjExists()){
-            return $this->redirectToRoute('character_show', ['id' => $this->getUser()->getUCharacter()->getId()]);
+        if($uc->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }else{
-            $character = new Character();
-            $form = $this->createForm(CharacterType::class, $character);
-            $form->handleRequest($request);
+            if($this->ifPjExists()){
+                return $this->redirectToRoute('character_show', ['id' => $this->getUser()->getUCharacter()->getId()]);
+            }else{
+                $character = new Character();
+                $form = $this->createForm(CharacterType::class, $character);
+                $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $character->setBirthdate(\DateTime::createFromFormat("H:i:s d-m-Y",date("H:i:s d-m-Y")));
-                $character->setExp(0);
-                $character->setEnergy(0);
-                $character->setSkillpoints(0);
-                $character->setGold(0);
-                $character->setSilver(0);
-                $character->setCopper(0);
-                $character->setWorked(0);
-                $character->setFights(0);
-                $character->setFightsWon(0);
-                $character->setBot(false);
-                $this->getUser()->setUCharacter($character);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $character->setBirthdate(\DateTime::createFromFormat("H:i:s d-m-Y",date("H:i:s d-m-Y")));
+                    $character->setExp(0);
+                    $character->setEnergy(0);
+                    $character->setSkillpoints(0);
+                    $character->setGold(0);
+                    $character->setSilver(0);
+                    $character->setCopper(0);
+                    $character->setWorked(0);
+                    $character->setFights(0);
+                    $character->setFightsWon(0);
+                    $character->setBot(false);
+                    $this->getUser()->setUCharacter($character);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($character);
-                $em->flush();
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($character);
+                    $em->flush();
 
-                $status = "¡Personaje registrado!";
-                $class = "alert-dismissible alert-success";
-                $this->session->getFlashBag()->add("class", $class);
-                $this->session->getFlashBag()->add("status", $status);
+                    $status = "¡Personaje registrado!";
+                    $class = "alert-dismissible alert-success";
+                    $this->session->getFlashBag()->add("class", $class);
+                    $this->session->getFlashBag()->add("status", $status);
 
-                return $this->redirectToRoute('character_show', ['id' => $character->getId()]);
+                    return $this->redirectToRoute('character_show', ['id' => $character->getId()]);
+                }
+
+                return $this->render('character/new.html.twig', [
+                    'character' => $character,
+                    'form' => $form->createView(),
+                ]);
             }
-
-            return $this->render('character/new.html.twig', [
-                'character' => $character,
-                'form' => $form->createView(),
-            ]);
         }
     }
 
     /**
      * @Route("/{id}", name="character_show", methods="GET")
      */
-    public function show(Character $character, Utilities $utilities): Response
+    public function show(Character $character, Utilities $utilities, UserController $uc): Response
     {   
-        if($this->ifPjNoExists()){
-            return $this->redirectToRoute('character_new');
+        if($uc->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }else{
-            $exp = $this->getUser()->getUCharacter()->getExp();
-            $lvl = $utilities->getLvl($exp);
-            $expNextLvl = $utilities->expLvl($lvl+1) - $exp;
-            return $this->render('character/show.html.twig', [
-                'character' => $this->getUser()->getUCharacter(),
-                'lvl' => $lvl,
-                'expNextLvl' => $expNextLvl,
-            ]);
+            if($this->ifPjNoExists()){
+                return $this->redirectToRoute('character_new');
+            }else{
+                $exp = $this->getUser()->getUCharacter()->getExp();
+                $lvl = $utilities->getLvl($exp);
+                $expNextLvl = $utilities->expLvl($lvl+1) - $exp;
+                return $this->render('character/show.html.twig', [
+                    'character' => $this->getUser()->getUCharacter(),
+                    'lvl' => $lvl,
+                    'expNextLvl' => $expNextLvl,
+                ]);
+            }
         }
     }
 
     /**
      * @Route("/classi/", name="classi", methods="GET")
      */
-    public function classi(Request $request, CharacterRepository $characterRepository, Utilities $utilities): Response
-    {   
-        if($this->ifPjNoExists()){
-            return $this->redirectToRoute('character_new');
+    public function classi(Request $request, CharacterRepository $characterRepository, Utilities $utilities, UserController $uc): Response
+    {   if($uc->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }else{
-            $em = $this->getDoctrine()->getManager();
-            $characters = $em->getRepository(Character::class)->findBy(['bot' => false],['exp' => 'DESC']);
-            $lvls = [];
-            $i = 0;
-            foreach($characters as $c){
-                $lvl = $utilities->getLvl($c->getExp());
-                $lvls[$i] = $lvl;
-                $i++;
+            if($this->ifPjNoExists()){
+                return $this->redirectToRoute('character_new');
+            }else{
+                $em = $this->getDoctrine()->getManager();
+                $characters = $em->getRepository(Character::class)->findBy(['bot' => false],['exp' => 'DESC']);
+                $lvls = [];
+                $i = 0;
+                foreach($characters as $c){
+                    $lvl = $utilities->getLvl($c->getExp());
+                    $lvls[$i] = $lvl;
+                    $i++;
+                }
+                return $this->render('character/classi.html.twig', [
+                    'characters' => $characters,
+                    'lvls' => $lvls,
+                ]);
             }
-            return $this->render('character/classi.html.twig', [
-                'characters' => $characters,
-                'lvls' => $lvls,
-            ]);
         }
     }
 

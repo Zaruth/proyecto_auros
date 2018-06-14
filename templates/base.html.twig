@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Auros - {% block title %}{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
+            
             <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+            <link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
         {% endblock %}
         {% block scripts %}
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -47,7 +48,7 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item" href="{{ path('message_index') }}">Mensajería</a>
-                                            <a class="dropdown-item" href="{{ path('thread_index') }}">Taberna</a>
+                                            <a class="dropdown-item" href="{{ path('thread_index') }}">Foro</a>
                                             <a class="dropdown-item" href="{{ path('classi') }}">Clasificación</a>
                                             <a class="dropdown-item" href="#">Clanes</a>
                                         </div>
@@ -114,23 +115,26 @@
                 </nav>
             {% endblock %}
         </div>
-        <div class="content">
-            <div class="mensaje">
-                {% for class in app.session.flashbag().get('class') %}
-                    <div class="alert {{ class }}">
-                        {% for message in app.session.flashbag().get('status') %}
-                            {{ message }}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
+
+        <CENTER>
+            <div class="content">
+                <div class="mensaje">
+                    {% for class in app.session.flashbag().get('class') %}
+                        <div class="alert {{ class }}">
+                            {% for message in app.session.flashbag().get('status') %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="container text-center alert alert-dismissible alert-light">
+                    {% block body %}{% endblock %}
+                </div>
             </div>
-            <div class="container text-center alert alert-dismissible alert-light">
-                {% block body %}{% endblock %}
+            <div class="footer">
+                {% block foo %}{% endblock %}
             </div>
-        </div>
-        <div class="footer">
-            {% block foo %}{% endblock %}
-        </div>
+        </CENTER>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

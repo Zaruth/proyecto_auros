@@ -154,11 +154,17 @@ class Character
      */
     private $threads;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HaveItems", mappedBy="charac")
+     */
+    private $haveItems;
+
     public function __construct()
     {
         $this->charmessages = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->threads = new ArrayCollection();
+        $this->haveItems = new ArrayCollection();
     }
 
     public function getId()
@@ -541,6 +547,37 @@ class Character
             // set the owning side to null (unless already changed)
             if ($thread->getCthread() === $this) {
                 $thread->setCthread(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HaveItems[]
+     */
+    public function getHaveItems(): Collection
+    {
+        return $this->haveItems;
+    }
+
+    public function addHaveItem(HaveItems $haveItem): self
+    {
+        if (!$this->haveItems->contains($haveItem)) {
+            $this->haveItems[] = $haveItem;
+            $haveItem->setCharac($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHaveItem(HaveItems $haveItem): self
+    {
+        if ($this->haveItems->contains($haveItem)) {
+            $this->haveItems->removeElement($haveItem);
+            // set the owning side to null (unless already changed)
+            if ($haveItem->getCharac() === $this) {
+                $haveItem->setCharac(null);
             }
         }
 

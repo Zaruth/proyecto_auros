@@ -5,3 +5,6 @@
     margin: 20px;
     
 }
+.table th, .table td{
+    padding: 0rem;
+}

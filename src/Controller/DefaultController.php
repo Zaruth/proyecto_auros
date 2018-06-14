@@ -22,8 +22,13 @@ class DefaultController extends Controller
      */
     public function index()
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
-        return $this->redirectToRoute('inicio');
+        if(!$this->getUser()){
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+            return $this->redirectToRoute('inicio');
+        }
+        else{
+            return $this->redirectToRoute('character_index');
+        }
     }
 
     /**
@@ -31,9 +36,14 @@ class DefaultController extends Controller
      */
     public function inicio()
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
-        return $this->render('default/index.html.twig', [
-            'controller_name' => 'DefaultController',
-        ]);
+        if(!$this->getUser()){
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+            return $this->render('default/index.html.twig', [
+                'controller_name' => 'DefaultController',
+            ]);
+        }
+        else{
+            return $this->redirectToRoute('character_index');
+        }
     }
 }

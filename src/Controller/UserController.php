@@ -31,20 +31,23 @@ class UserController extends Controller
      */
     public function index(UserRepository $userRepository): Response
     {
-        $this->check_ban();
+        if($this->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
+        }
+        else{
+            $status = "Bienvenido ".$this->getUser()->getUsername();
+            $class = "alert-dismissible alert-info";
+            $this->session->getFlashBag()->add("class", $class);
+            $this->session->getFlashBag()->add("status", $status);
 
-        $status = "Bienvenido ".$this->getUser()->getUsername();
-        $class = "alert-dismissible alert-info";
-        $this->session->getFlashBag()->add("class", $class);
-        $this->session->getFlashBag()->add("status", $status);
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
+            $user->setIpLogin("192.168.4.26");
+            $user->setLastLogin(\DateTime::createFromFormat("H:i:s d-m-Y",date("H:i:s d-m-Y")));
+            $entityManager->flush();
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getId());
-        $user->setIpLogin("192.168.4.26");
-        $user->setLastLogin(\DateTime::createFromFormat("H:i:s d-m-Y",date("H:i:s d-m-Y")));
-        $entityManager->flush();
-
-        return $this->redirectToRoute('user_show',array('id'=>$user->getId()));
+            return $this->redirectToRoute('user_show',array('id'=>$user->getId()));
+        }
     }
 
     /**
@@ -52,10 +55,15 @@ class UserController extends Controller
      */
     public function show(User $user): Response
     {
-        if($this->getUser()->getId() != $user->getId()){
-            return $this->show($this->getUser());
+        if($this->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }
-        return $this->render('user/show.html.twig', ['user' => $user]);
+        else{
+            if($this->getUser()->getId() != $user->getId()){
+                return $this->show($this->getUser());
+            }
+            return $this->render('user/show.html.twig', ['user' => $user]);
+        }
     }
 
     /**
@@ -63,39 +71,42 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {   
-        $this->check_ban();
-
-        if($this->getUser()->getId() != $user->getId()){
-            return $this->show($this->getUser());
+        if($this->check_ban($this->getUser())){
+            return $this->redirectToRoute('logout');
         }
+        else{
+            if($this->getUser()->getId() != $user->getId()){
+                return $this->show($this->getUser());
+            }
 
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-            $this->getDoctrine()->getManager()->flush();
-            
-            $status = "Datos de usuario modificados con éxito.";
-            $class = "alert-success";
-            $this->session->getFlashBag()->add("class", $class);
-            $this->session->getFlashBag()->add("status", $status);
-            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+                $user->setPassword($password);
+                $this->getDoctrine()->getManager()->flush();
+                
+                $status = "Datos de usuario modificados con éxito.";
+                $class = "alert-success";
+                $this->session->getFlashBag()->add("class", $class);
+                $this->session->getFlashBag()->add("status", $status);
+                return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+            }
+
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
     }
 
-    public function check_ban()
+    public function check_ban(User $user)
     {
-        $isBanned = $this->getUser()->getBanned();
+        $isBanned = $user->getBanned();
         if ($isBanned != null){
             if(date("H:i:s d-m-Y") > $isBanned){
-                $this->getUser()->setBanned(null);
+                $user->setBanned(null);
                 return false;
             }
             else{
@@ -104,8 +115,11 @@ class UserController extends Controller
                 $this->session->getFlashBag()->add("class", $class);
                 $this->session->getFlashBag()->add("status", $status);
                 setcookie('banned', $status, time() + (86400 * 120), "/"); // 86400 = 1 day // 120 days
-                return $this->redirectToRoute('logout');
+                return true;
             }
+        }
+        else{
+            return false;
         }
     }
 }
