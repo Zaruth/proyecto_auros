@@ -33,10 +33,10 @@ class HaveItems
     private $charac;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Item", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Equipment")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $item;
+    private $iequipment;
 
     public function getId()
     {
@@ -79,14 +79,14 @@ class HaveItems
         return $this;
     }
 
-    public function getItem(): ?Item
+    public function getIequipment(): ?Equipment
     {
-        return $this->item;
+        return $this->iequipment;
     }
 
-    public function setItem(Item $item): self
+    public function setIequipment(?Equipment $iequipment): self
     {
-        $this->item = $item;
+        $this->iequipment = $iequipment;
 
         return $this;
     }

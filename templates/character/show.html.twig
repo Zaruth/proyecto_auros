@@ -4,91 +4,67 @@
 {% block body %}
 <h1>Personaje</h1>
 
-<table class="table" align="center" style="width:400px;">
+<table class="table text-left" align="center" style="width:300px;">
     <tbody>
         <tr>
-            <th>Nombre:</th>
-            <td>{{ character.lastName }}</td>
+            <td colspan="2"><b>Nombre:</b> {{ character.lastName }} {{ character.surName }} {{ character.surName2 ? character.surName2 : '' }}</td>
         </tr>
         <tr>
-            <th>Apellidos</th>
-            <td>{{ character.surName }} {{ character.surName2 ? character.surName2 : '' }}</td>
+            <td colspan="2"><b>Sexo:</b> {{ character.gender }}</td>
         </tr>
         <tr>
-            <th>Sexo:</th>
-            <td>{{ character.gender }}</td>
+            <td colspan="2" valign="middle"><b>Raza:</b> {{ character.race }}<img src="{% if character.race == 'Humano' %}{{ asset('img/game/pjs/Humano.gif') }}
+                {% elseif character.race == 'Orco oscuro' %}{{ asset('img/game/pjs/Orco.gif') }}
+                {% elseif character.race == 'Ligneo' %}{{ asset('img/game/pjs/Ligneo.gif') }}
+                {% elseif character.race == 'Elfo solar' %}{{ asset('img/game/pjs/Elfo.gif') }}
+                {% elseif character.race == 'Efrit' %}{{ asset('img/game/pjs/Efrit.gif') }}
+                {% elseif character.race == 'Lapidum' %}{{ asset('img/game/pjs/Lapidum.gif') }}
+                {% endif %}"></td>
         </tr>
         <tr>
-            <th>Raza</th>
-            <td>{{ character.race }}</td>
+            <td><b>Edad:</b> {{ character.age }}</td>
         </tr>
         <tr>
-            <th>Edad</th>
-            <td>{{ character.age }}</td>
+            <td><b>Cumpleaños:</b> {{ character.birthdate ? character.birthdate|date('d/M') : '' }}</td>
         </tr>
         <tr>
-            <th>Fecha de nacimiento</th>
-            <td>{{ character.birthdate ? character.birthdate|date('Y-m-d H:i:s') : '' }}</td>
+            <td><b>Clase:</b> {{ character.class }}<img src="{% if character.class == 'Adepto' %}{{ asset('img/game/emblems/adepto.gif') }}
+                {% elseif character.class == 'Bandido' %}{{ asset('img/game/emblems/bandido.gif') }}
+                {% elseif character.class == 'Soldado' %}{{ asset('img/game/emblems/soldado.gif') }}
+                {% endif %}"></td>
         </tr>
         <tr>
-            <th>Clase</th>
-            <td>{{ character.class }}</td>
+            <td><b>Subclase:</b> {{ character.subclass ? character.subclass : '???' }}<img src="{{ asset('img/game/misc/unknown.gif') }}"></td>
         </tr>
         <tr>
-            <th>Subclase</th>
-            <td>{{ character.subclass ? character.subclass : 'Sin subclase' }}</td>
+            <td><b>Nivel:</b> {{ lvl }}</td>
         </tr>
         <tr>
-            <th>Experiencia</th>
-            <td>{{ character.exp }}</td>
+            <td><b>Experiencia: </b> {{ character.exp }}pts</td>
         </tr>
         <tr>
-            <th>Nivel</th>
-            <td>{{ lvl }}</td>
+            <td><b>Siguiente nivel en:</b> {{ expNextLvl }}pts</td>
         </tr>
         <tr>
-            <th>Experiencia siguiente nivel</th>
-            <td>{{ expNextLvl }}</td>
+            <td><b>Energía:</b> {{ character.energy }}/100</td>
         </tr>
         <tr>
-            <th>Energía</th>
-            <td>{{ character.energy }}/100</td>
+            <td><b>Puntos de habilidad:</b> {{ character.skillpoints }}</td>
         </tr>
         <tr>
-            <th>Puntos de habilidad:</th>
-            <td>{{ character.skillpoints }}</td>
+            <td><b>Dinero:</b> {{ character.gold }}<img src="{{ asset('img/game/misc/goldcoin.png') }}"> {{ character.silver }}<img src="{{ asset('img/game/misc/silvercoin.png') }}"> {{ character.copper }}<img src="{{ asset('img/game/misc/coppercoin.png') }}"></td>
         </tr>
         <tr>
-            <th>Oro</th>
-            <td>{{ character.gold }}</td>
+            <td><b>Trajabado:</b> {{ character.worked  }}</td>
         </tr>
         <tr>
-            <th>Plata</th>
-            <td>{{ character.silver }}</td>
+            <td><b>Fin de trabajo:</b> {{ character.workFinish ? character.workFinish|date('Y-m-d H:i:s') : 'No' }}</td>
         </tr>
         <tr>
-            <th>Cobre</th>
-            <td>{{ character.copper }}</td>
+            <td><b>Combates(Ganados/totales):</b> {{ character.fightsWon }}/{{ character.fights }}</td>
         </tr>
         <tr>
-            <th>Trajabado</th>
-            <td>{{ character.worked }}</td>
-        </tr>
-        <tr>
-            <th>Fin de trabajo</th>
-            <td>{{ character.workFinish ? character.workFinish|date('Y-m-d H:i:s') : 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Combates</th>
-            <td>{{ character.fights }}</td>
-        </tr>
-        <tr>
-            <th>Combates ganados</th>
-            <td>{{ character.fightsWon }}</td>
-        </tr>
-        <tr>
-            <th>Último combate</th>
-            <td>{{ character.lastFight ? character.lastFight|date('Y-m-d H:i:s') : 'No' }}</td>
+            <td><b>Último combate:</b> {{ character.lastFight ? character.lastFight|date('H:i:s d-m-Y') : 'No realizado' }}</td>
         </tr>
     </tbody>
 </table>

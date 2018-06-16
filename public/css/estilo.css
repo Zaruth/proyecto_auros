@@ -7,4 +7,5 @@
 }
 .table th, .table td{
     padding: 0rem;
+    border-top: 0px;
 }
