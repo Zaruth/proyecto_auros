@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Auros - {% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            
+            <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+            <link rel="stylesheet" href="{{ asset('css/estilo.css') }}">
+        {% endblock %}
+        {% block scripts %}
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" ></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        {% endblock %}
+        <link rel="icon" type="image/gif" href="{{ asset('img/app/favicon.gif') }}" />
+    </head>
+    <body>
+        <div>
+            {% block menu %}
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a class="navbar-brand" href="{{ path('character_index') }}">Auros</a>
+                    {% else %}
+                        <a class="navbar-brand" href="{{ path('inicio') }}">Auros</a>
+                    {% endif %}
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {% if app.user.ucharacter.lastname is defined  %}
+                                    <li class="nav-item dropdown active">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Personaje
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item text-primary" href="{{ path('character_index') }}">Resumen</a>
+                                            <a class="dropdown-item text-muted" href="#">Inventario</a>
+                                            <a class="dropdown-item text-muted" href="#">Mascotas</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown active">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Social
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item text-primary" href="{{ path('message_index') }}">Mensajería</a>
+                                            <a class="dropdown-item text-primary" href="{{ path('thread_index') }}">Foro</a>
+                                            <a class="dropdown-item text-primary" href="{{ path('classi') }}">Clasificación</a>
+                                            <a class="dropdown-item text-muted" href="#">Clanes</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown active">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Acciones
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item text-muted" href="#">Combatir</a>
+                                            <a class="dropdown-item text-muted" href="#">Comerciar</a>
+                                            <a class="dropdown-item text-muted" href="#">Explorar</a>
+                                            <a class="dropdown-item text-muted" href="#">Fabricar</a>
+                                            <a class="dropdown-item text-primary" href="{{ path('work') }}">Trabajar</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link text-muted" href="#">Mercader</a>
+                                    </li>
+                                    <li class="nav-item active">
+                                        <a class="nav-link text-muted" href="#">Donaciones</a>
+                                    </li>
+                                    <li class="nav-item dropdown active">
+                                        <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Ayuda
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item text-muted" href="#">Wiki</a>
+                                            <a class="dropdown-item text-muted" href="#">FAQ</a>
+                                            <a class="dropdown-item text-muted" href="#">Soporte</a>
+                                            <a class="dropdown-item text-muted" href="#">Sobre Auros</a>
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="{{ path('character_new') }}">Crear personaje</a>
+                                    </li>
+                                {% endif %}
+                                
+                            {% else %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('login') }}">Iniciar Sesión</a>
+                                </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('registro') }}">Registro</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item dropdown active">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ app.user.username }}
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item text-primary" href="{{ path('user_show', {'id': app.user.id}) }}">Mi cuenta</a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a class="dropdown-item text-warning" href="{{ path('adminpanel') }}">* ADMIN *</a>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_MOD') %}
+                                            <a class="dropdown-item text-warning" href="{{ path('modpanel') }}">* MOD *</a>
+                                        {% endif %}
+                                        <a class="dropdown-item text-danger" href="{{ path('logout') }}">Salir</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endblock %}
+        </div>
+
+        <CENTER>
+            <div class="content">
+                <div class="mensaje">
+                    {% for class in app.session.flashbag().get('class') %}
+                        <div class="alert {{ class }}">
+                            {% for message in app.session.flashbag().get('status') %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="container text-center alert alert-dismissible alert-light">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+            <div class="footer">
+                {% block foo %}{% endblock %}
+            </div>
+        </CENTER>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

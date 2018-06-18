@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mod{% endblock %}
+
+{% block body %}
+    <h1>Panel de moderación</h1>
+    <br>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td colspan="4">
+                    <div class="card border-primary">
+                        <div class="card-header"><h3>Silencios</h3></div>
+                        <div class="card-body">
+                        <table class="table" width="100%">
+                            <tr>
+                                <form action="{{ path('modmuteuser') }}">
+                                    <th class="align-middle"><h4>Silenciar usuario:</h4></th>
+                                    <td>
+                                        <select class="form-control" id="muteselect" name="muteselect">
+                                            {% for user in users %}
+                                                {% if user.silenced == null %}
+                                                    <option value="{{user.id}}"><b>Nombre:</b> {{user.username}} || <b>Personaje:</b> {{ user.ucharacter.lastName ? user.ucharacter.lastName : '' }} {{ user.ucharacter.surName ? user.ucharacter.surName : '' }} {{ user.ucharacter.surName2 ? user.ucharacter.surName2 : '' }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td style="padding-left: 5px;"><div class="form-group form-inline" style="padding-left: 20px;"><label><h4 style="padding-right: 10px;">Horas: </h4></label><input class="form-control" type="text" name="mutetime" value="2"></div></td>
+                                    <td>
+                                        <button class="btn btn-danger" type="submit">Silenciar</button>
+                                    </td>
+                                </form>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <h4 class="text-center">Usuarios Silenciados:</h4>
+                                    <table class="table">
+                                        <thead>
+                                            <th>Usuario</th>
+                                            <th>Personaje</th>
+                                            <th>Silenciado hasta</th>
+                                            <th>Acciones</th>
+                                        </thead>
+                                        {% for user in users %}
+                                            {% if user.silenced != null %}
+                                                <tr>
+                                                    <td style="padding-top: 5px;">{{user.username}}</td>
+                                                    <td style="padding-top: 5px;">{{ user.ucharacter.lastName ? user.ucharacter.lastName : 'Sin personaje' }} {{ user.ucharacter.surName ? user.ucharacter.surName : '' }} {{ user.ucharacter.surName2 ? user.ucharacter.surName2 : '' }}</td>
+                                                    <td style="padding-top: 5px;"><b>{{ user.silenced ? user.silenced|date('H:i:s') : '' }}</b> del día <b>{{ user.silenced ? user.silenced|date('d-m-Y') : '' }}</td>
+                                                    <td style="padding-top: 5px;"><a href="{{ path('modunmuteuser', {'id': user.id}) }}"><button class="btn btn-sm btn-warning">Quitar Silencio</button></a></td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr><td colspan="4"><br></td></tr>
+            <tr>
+                <td colspan="4">
+                    <div class="card border-primary">
+                        <div class="card-header"><h3>Mensajes Reportados</h3></div>
+                        <div class="card-body">
+                        <table class="table" width="100%">
+                            <tr>
+                                <td colspan="4">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Remitente</th>
+                                            <th>Destinatario</th>
+                                            <th>Mensaje</th>
+                                            <th>Acciones</th>
+                                        </thead>
+                                        {% for m in messages %}
+                                            <tr>
+                                                <td style="padding-top: 5px;">{{ m.characterfrom.lastName ? m.characterfrom.lastName : 'Sin personaje' }} {{ m.characterfrom.surName ? m.characterfrom.surName : '' }} {{ m.characterfrom.surName2 ? m.characterfrom.surName2 : '' }}</td>
+                                                <td style="padding-top: 5px;">{{ m.characterto.lastName ? m.characterto.lastName : 'Sin personaje' }} {{ m.characterto.surName ? m.characterto.surName : '' }} {{ m.characterto.surName2 ? m.characterto.surName2 : '' }}</td>
+                                                <td style="padding-top: 5px;">{{m.text|raw}}</td>
+                                                <td style="padding-top: 5px;"><a href="{{ path('modremovereport', {'id': m.id}) }}"><button class="btn btn-sm btn-warning">Quitar Reporte</button></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

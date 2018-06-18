@@ -1,0 +1,49 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+    providers:
+        in_memory: { memory: ~ }
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            provider: our_db_provider
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+                default_target_path: character_index
+                failure_path: login
+            logout:
+                path:   /juego/logout
+                target: /juego/login
+            # https://symfony.com/doc/current/security/form_login_setup.html
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER, ROLE_MOD]
+        ROLE_MOD: ROLE_USER
+            
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/juego/character/, roles: ROLE_USER }
+        - { path: ^/juego/modpanel/, roles: ROLE_MOD }
+        - { path: ^/juego/adminpanel/, roles: ROLE_ADMIN }
+        - { path: ^/juego/user/, roles: ROLE_USER }
+        - { path: ^/juego/inicio, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/juego/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/juego/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/juego/logout, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

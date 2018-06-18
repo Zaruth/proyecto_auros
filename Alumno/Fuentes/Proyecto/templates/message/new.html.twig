@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuevo Mensaje{% endblock %}
+
+{% block body %}
+    <h1>Nuevo Mensaje</h1>
+    
+    {{ form_start(form) }}
+    <table align="center" style="width: 500px;">
+        <tr>
+            <td align="right">
+                Personaje:
+            </td>
+            <td>
+                {{ user.ucharacter.lastname }} {{ user.ucharacter.surname }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                {{ form_label(form.text) }}<br>
+                {{ form_widget(form.text) }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button class="btn btn-success" type="submit">Enviar</button>
+            </td>
+        </tr>
+    </table>
+    {{ form_end(form) }}
+{% endblock %}

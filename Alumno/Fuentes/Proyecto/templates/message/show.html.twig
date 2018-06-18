@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mensaje{% endblock %}
+
+{% block body %}
+    <h1>Mensaje</h1>
+
+    <CENTER>
+        <table class="table" style="width: 500px;">
+            <tbody>
+                <tr>
+                    <th class="text-right">Fecha:</th>
+                    <td class="text-left">{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">Reportado:</th>
+                    <td class="text-left">{{ message.reported ? 'Yes' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-right">Texto:</th>
+                    <td class="text-left">{{ message.text|raw }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </CENTER>
+{% endblock %}
